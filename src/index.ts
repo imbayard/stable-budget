@@ -3,10 +3,21 @@ import { getCategoryReport } from './utils/reporter/category-report/get-category
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/lib/function'
 import { writeReport } from './utils/reporter/write-report'
+import * as RTE from 'fp-ts/ReaderTaskEither'
+import { getPriorityReport } from './utils/reporter/priority-report/get-priority-report'
+import { DateRange } from './types/types'
 
-export const main = () =>
+export const main = (dateRange?: DateRange) =>
   pipe(
-    loadTransactionsFromCSV(),
-    E.map(getCategoryReport),
-    E.map((reports) => writeReport([reports]))
+    loadTransactionsFromCSV(dateRange),
+    RTE.fromEither,
+    RTE.chainW((txns) =>
+      pipe(
+        RTE.Do,
+        RTE.apSW('categoryReport', RTE.right(getCategoryReport(txns))),
+        RTE.apSW('priorityReport', RTE.right(getPriorityReport(txns))),
+        RTE.map((ctx) => [ctx.categoryReport, ctx.priorityReport])
+      )
+    ),
+    RTE.map((reports) => writeReport(reports, dateRange))
   )

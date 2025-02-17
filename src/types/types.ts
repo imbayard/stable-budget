@@ -24,8 +24,10 @@ export const TransactionsCodec = t.array(TransactionEntryCodec)
 
 export type TransactionEntry = t.TypeOf<typeof TransactionEntryCodec>
 
-export type CategoryReportForCategory = {
+export type AmountReportForSubsection = {
   name: string
   total: number
   ranking: number
 }
+
+export type DateRange = { start: string; end: string }
