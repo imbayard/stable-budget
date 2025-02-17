@@ -6,6 +6,7 @@ import { writeReport } from './utils/reporter/write-report'
 import * as RTE from 'fp-ts/ReaderTaskEither'
 import { getPriorityReport } from './utils/reporter/priority-report/get-priority-report'
 import { DateRange } from './types/types'
+import { getEventReport } from './utils/reporter/event-report/get-event-report'
 
 export const main = (dateRange?: DateRange) =>
   pipe(
@@ -16,7 +17,12 @@ export const main = (dateRange?: DateRange) =>
         RTE.Do,
         RTE.apSW('categoryReport', RTE.right(getCategoryReport(txns))),
         RTE.apSW('priorityReport', RTE.right(getPriorityReport(txns))),
-        RTE.map((ctx) => [ctx.categoryReport, ctx.priorityReport])
+        RTE.apSW('eventReport', RTE.right(getEventReport(txns))),
+        RTE.map((ctx) => [
+          ctx.categoryReport,
+          ctx.priorityReport,
+          ctx.eventReport,
+        ])
       )
     ),
     RTE.map((reports) => writeReport(reports, dateRange))

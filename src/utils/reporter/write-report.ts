@@ -13,6 +13,7 @@ const getFullReportString = (reports: string[], dateRange?: DateRange) => `
 # Report${dateRange ? getDateRange(dateRange) : ''}
 - [Category Report](#category-report)
 - [Priority Report](#priority-report)
+- [Events Report](#events-report)
 ${reports.join('\n\n')}
 `
 

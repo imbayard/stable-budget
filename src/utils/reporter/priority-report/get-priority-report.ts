@@ -1,7 +1,6 @@
 import { CONFIG } from '../../../config'
 import {
   AmountReportForSubsection,
-  DateRange,
   TransactionEntry,
 } from '../../../types/types'
 import { getRankedAmountsByKey } from '../utils/get-ranked-amounts-by-key'
