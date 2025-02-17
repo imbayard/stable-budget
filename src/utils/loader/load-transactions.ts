@@ -1,10 +1,10 @@
 import * as fs from 'fs'
 import { parse } from 'csv-parse/sync'
 import { pipe } from 'fp-ts/lib/function'
-import { TransactionEntry, TransactionsCodec } from '../types/types'
+import { TransactionEntry, TransactionsCodec } from '../../types/types'
 import * as E from 'fp-ts/Either'
-import { BadTypeError } from '../types/error-types'
-import { CONFIG } from '../config'
+import { BadTypeError } from '../../types/error-types'
+import { CONFIG } from '../../config'
 
 export const loadTransactionsFromCSV = (): E.Either<
   BadTypeError,

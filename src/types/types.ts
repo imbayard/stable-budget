@@ -3,15 +3,7 @@ import {
   DefaultToUndefinedIfEmptyString,
   NumberFromString,
 } from '../utils/io-ts/custom-decoders'
-
-const RecurrenceType = t.union([
-  t.literal('Daily'),
-  t.literal('Weekly'),
-  t.literal('Bi-Weekly'),
-  t.literal('Monthly'),
-  t.literal('Yearly'),
-  t.literal(''),
-])
+import { CategoryTypeCodec, RecurrenceType } from './constants'
 
 const TransactionEntryCodec = t.type({
   date: t.string, // Expecting YYYY-MM-DD format (validation can be extended)
@@ -21,7 +13,7 @@ const TransactionEntryCodec = t.type({
   /* Which priority led to this purchase (eg. Personal Growth, Boston Friends) */
   priority: t.string,
   /* Which budgeting category led to this purchase (eg. Food, Vacation, Drinks) */
-  category: t.string,
+  category: CategoryTypeCodec,
   /* What event (if any) led to this purchase (eg. Valentine's Day) */
   event: DefaultToUndefinedIfEmptyString,
   recurs: t.union([RecurrenceType, t.undefined]),
@@ -31,3 +23,9 @@ const TransactionEntryCodec = t.type({
 export const TransactionsCodec = t.array(TransactionEntryCodec)
 
 export type TransactionEntry = t.TypeOf<typeof TransactionEntryCodec>
+
+export type CategoryReportForCategory = {
+  name: string
+  total: number
+  ranking: number
+}
