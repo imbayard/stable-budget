@@ -1,5 +1,8 @@
 import * as t from 'io-ts'
-import { NumberFromString } from '../utils/io-ts/custom-decoders'
+import {
+  DefaultToUndefinedIfEmptyString,
+  NumberFromString,
+} from '../utils/io-ts/custom-decoders'
 
 const RecurrenceType = t.union([
   t.literal('Daily'),
@@ -20,7 +23,7 @@ const TransactionEntryCodec = t.type({
   /* Which budgeting category led to this purchase (eg. Food, Vacation, Drinks) */
   category: t.string,
   /* What event (if any) led to this purchase (eg. Valentine's Day) */
-  event: t.union([t.string, t.undefined]),
+  event: DefaultToUndefinedIfEmptyString,
   recurs: t.union([RecurrenceType, t.undefined]),
 })
 

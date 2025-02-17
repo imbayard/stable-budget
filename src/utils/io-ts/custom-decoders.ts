@@ -18,3 +18,27 @@ export const NumberFromString = new t.Type<number, string, unknown>(
     ),
   String // Encode number back to string
 )
+
+/**
+ * Custom io-ts codec to default an empty string to undefined.
+ */
+export const DefaultToUndefinedIfEmptyString = new t.Type<
+  string | undefined,
+  string,
+  unknown
+>(
+  'DefaultToUndefinedIfEmptyString',
+  (u): u is string => typeof u === 'string' && u !== '',
+  (u, c) =>
+    pipe(
+      t.string.validate(u, c), // Ensure it's a string
+      E.chain((s) => {
+        return s === ''
+          ? t.success(undefined)
+          : typeof s === 'string'
+          ? t.success(s)
+          : t.failure(u, c)
+      })
+    ),
+  String // Encode number back to string
+)
