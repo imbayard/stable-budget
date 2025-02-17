@@ -12,7 +12,7 @@ export const NumberFromString = new t.Type<number, string, unknown>(
     pipe(
       t.string.validate(u, c), // Ensure it's a string
       E.chain((s) => {
-        const parsed = Number(s.replace(',', ''))
+        const parsed = Number(s.replace(',', '').replace('$', ''))
         return isNaN(parsed) ? t.failure(u, c) : t.success(parsed)
       })
     ),

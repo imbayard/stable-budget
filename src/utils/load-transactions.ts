@@ -38,5 +38,3 @@ export const loadTransactionsFromCSV = (): E.Either<
     })
   )
 }
-
-loadTransactionsFromCSV()
