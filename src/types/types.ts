@@ -24,6 +24,17 @@ export const TransactionsCodec = t.array(TransactionEntryCodec)
 
 export type TransactionEntry = t.TypeOf<typeof TransactionEntryCodec>
 
+export type TransactionResponse = {
+  date: string
+  payment_method: string
+  amount: number
+  merchant: string
+  priority: string[]
+  category: string[]
+  event?: string
+  recurs?: string
+}
+
 export type AmountReportForSubsection = {
   name: string
   total: number

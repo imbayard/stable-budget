@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/lib/function'
 import {
   DateRange,
   TransactionEntry,
+  TransactionResponse,
   TransactionsCodec,
 } from '../../types/types'
 import * as E from 'fp-ts/Either'
@@ -13,7 +14,7 @@ import moment from 'moment'
 
 export const loadTransactionsFromCSV = (
   dateRange?: DateRange
-): E.Either<BadTypeError, TransactionEntry[]> => {
+): E.Either<BadTypeError, TransactionResponse[]> => {
   const fileContent = fs.readFileSync(
     CONFIG.TRANSACTION_INPUT_CSV_FILENAME,
     'utf-8'
@@ -39,6 +40,8 @@ export const loadTransactionsFromCSV = (
         .map((txn) => ({
           ...txn,
           recurs: txn.recurs === '' ? undefined : txn.recurs,
+          priority: txn.priority.split(',').map((p) => p.trim()),
+          category: txn.category.split(',').map((c) => c.trim()),
         }))
         .filter((txn) =>
           dateRange ? isTransactionInDateRange(dateRange, txn.date) : true
