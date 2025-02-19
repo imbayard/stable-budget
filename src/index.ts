@@ -7,12 +7,15 @@ import * as RTE from 'fp-ts/ReaderTaskEither'
 import { getPriorityReport } from './utils/reporter/priority-report/get-priority-report'
 import { DateRange } from './types/types'
 import { getEventReport } from './utils/reporter/event-report/get-event-report'
+import express from 'express'
+import moment from 'moment'
 
 export const main = (dateRange?: DateRange) =>
   pipe(
     loadTransactionsFromCSV(dateRange),
     RTE.fromEither,
-    RTE.chainW((txns) =>
+    RTE.bindTo('txns'),
+    RTE.bindW('reports', ({ txns }) =>
       pipe(
         RTE.Do,
         RTE.apSW('categoryReport', RTE.right(getCategoryReport(txns))),
@@ -25,5 +28,33 @@ export const main = (dateRange?: DateRange) =>
         ])
       )
     ),
-    RTE.map((reports) => writeReport(reports, dateRange))
+    RTE.map(({ reports, txns }) => ({
+      report: writeReport(reports),
+      transactions: txns,
+    })),
+    RTE.getOrElse((e) => {
+      throw e
+    })
   )
+
+const app = express()
+const PORT = process.env.PORT || 3000
+
+app.use(express.json())
+
+app.post('/api/main', async (req, res) => {
+  const dateRange: DateRange = req.body.dateRange || {
+    start: '2025-01-01',
+    end: moment().format('YYYY-MM-DD'),
+  }
+  try {
+    const result = await main(dateRange)({})()
+    res.status(200).json(result)
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+})
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`)
+})
