@@ -6,6 +6,7 @@ import { DateRange } from './types/types'
 import express from 'express'
 import moment from 'moment'
 import cors from 'cors'
+import { saveTransaction } from './utils/writer/save-transaction'
 
 export const main = (dateRange?: DateRange) =>
   pipe(
@@ -27,6 +28,7 @@ const PORT = process.env.PORT || 3000
 app.use(express.json())
 
 app.post('/api/main', async (req, res) => {
+  console.log('Fetch Beginning')
   const dateRange: DateRange = req.body.dateRange || {
     start: '2025-01-01',
     end: moment().format('YYYY-MM-DD'),
@@ -34,6 +36,16 @@ app.post('/api/main', async (req, res) => {
   try {
     const result = await main(dateRange)({})()
     res.status(200).json(result)
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+})
+
+app.post('/create/transaction', async (req, res) => {
+  console.log('Transaction update beginning')
+  try {
+    const result = await saveTransaction(req.body)()
+    res.status(200).json({ message: result.toString() })
   } catch (error) {
     res.status(500).json({ error })
   }

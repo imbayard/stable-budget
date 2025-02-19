@@ -42,3 +42,17 @@ export type AmountReportForSubsection = {
 }
 
 export type DateRange = { start: string; end: string }
+
+export const TransactionsInputCodec = t.type({
+  date: t.string, // Expecting YYYY-MM-DD format (validation can be extended)
+  payment_method: t.string,
+  amount: NumberFromString,
+  merchant: t.string,
+  /* Which priority led to this purchase (eg. Personal Growth, Boston Friends) */
+  priority: t.array(t.string),
+  /* Which budgeting category led to this purchase (eg. Food, Vacation, Drinks) */
+  category: t.array(t.string),
+  /* What event (if any) led to this purchase (eg. Valentine's Day) */
+  event: DefaultToUndefinedIfEmptyString,
+  recurs: t.union([RecurrenceType, t.undefined]),
+})
