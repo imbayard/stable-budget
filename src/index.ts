@@ -36,17 +36,21 @@ app.post('/api/main', async (req, res) => {
   try {
     const result = await main(dateRange)({})()
     res.status(200).json(result)
+    console.log('Fetch completed successfully')
   } catch (error) {
+    console.log('Error:', error)
     res.status(500).json({ error })
   }
 })
 
 app.post('/create/transaction', async (req, res) => {
-  console.log('Transaction update beginning')
+  console.log('Transaction update beginning', req.body)
   try {
     const result = await saveTransaction(req.body)()
     res.status(200).json({ message: result.toString() })
+    console.log('Transaction saved successfully')
   } catch (error) {
+    console.log('Error:', error)
     res.status(500).json({ error })
   }
 })

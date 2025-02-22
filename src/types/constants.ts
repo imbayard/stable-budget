@@ -23,6 +23,7 @@ const CategoryTypes = {
   Investment: null,
   Family: null,
   Refund: null,
+  'Financial Mgmt': null,
 }
 
 export const CategoryTypeCodec = t.keyof(CategoryTypes)
