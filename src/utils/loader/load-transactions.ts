@@ -55,7 +55,7 @@ const isTransactionInDateRange = (
   transactionDate: string
 ) => {
   return (
-    moment(transactionDate).isAfter(moment(dateRange.start)) &&
-    moment(transactionDate).isBefore(moment(dateRange.end))
+    moment(transactionDate).isSameOrAfter(moment(dateRange.start)) &&
+    moment(transactionDate).isSameOrBefore(moment(dateRange.end))
   )
 }

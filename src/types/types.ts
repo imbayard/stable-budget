@@ -13,7 +13,7 @@ const TransactionEntryCodec = t.type({
   /* Which priority led to this purchase (eg. Personal Growth, Boston Friends) */
   priority: t.string,
   /* Which budgeting category led to this purchase (eg. Food, Vacation, Drinks) */
-  category: CategoryTypeCodec,
+  category: t.string,
   /* What event (if any) led to this purchase (eg. Valentine's Day) */
   event: DefaultToUndefinedIfEmptyString,
   recurs: t.union([RecurrenceType, t.undefined]),
