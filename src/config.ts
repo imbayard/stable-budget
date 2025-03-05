@@ -1,5 +1,6 @@
 export const CONFIG = {
   TRANSACTION_INPUT_CSV_FILENAME: 'data/transactions-input.csv',
+  USER_CSV_FILENAME: 'data/bayard.json',
   REPORT_MARKDOWN_FILENAME: 'data/report.md',
   PRIORITIES_RANKED: [
     'Work',

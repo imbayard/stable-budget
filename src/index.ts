@@ -7,6 +7,7 @@ import express from 'express'
 import moment from 'moment'
 import cors from 'cors'
 import { saveTransaction } from './utils/writer/save-transaction'
+import { loadUser } from './utils/loader/load-user'
 
 export const main = (dateRange?: DateRange) =>
   pipe(
@@ -49,6 +50,18 @@ app.post('/create/transaction', async (req, res) => {
     const result = await saveTransaction(req.body)()
     res.status(200).json({ message: result.toString() })
     console.log('Transaction saved successfully')
+  } catch (error) {
+    console.log('Error:', error)
+    res.status(500).json({ error })
+  }
+})
+
+app.get('/user', async (req, res) => {
+  console.log('User fetch beginning')
+  try {
+    const result = loadUser()
+    res.status(200).json(result)
+    console.log('User fetch completed successfully')
   } catch (error) {
     console.log('Error:', error)
     res.status(500).json({ error })

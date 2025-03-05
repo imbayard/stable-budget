@@ -3,6 +3,7 @@ import { TransactionsInputCodec } from '../../types/types'
 import * as TE from 'fp-ts/TaskEither'
 import * as fs from 'fs'
 import { CONFIG } from '../../config'
+import { stringify } from 'csv-stringify/sync'
 
 export const saveTransaction = (transaction: any) =>
   pipe(
@@ -20,15 +21,26 @@ export const saveTransaction = (transaction: any) =>
         CONFIG.TRANSACTION_INPUT_CSV_FILENAME,
         'utf-8'
       )
-      const transactionString = `${txn.date},${txn.payment_method},${
-        txn.amount
-      },${txn.merchant},"${txn.priority}",${txn.event || ''},"${
-        txn.category
-      }",${txn.recurs === '' || !txn.recurs ? ' ' : txn.recurs}`
+
+      const transactionString = stringify(
+        [
+          [
+            txn.date,
+            txn.payment_method,
+            txn.amount,
+            txn.merchant,
+            txn.priority,
+            txn.event || '',
+            txn.category,
+            txn.recurs,
+          ],
+        ],
+        { quoted: true }
+      )
 
       fs.writeFileSync(
         CONFIG.TRANSACTION_INPUT_CSV_FILENAME,
-        `${transactionsFile}\n${transactionString} `
+        `${transactionsFile}\n${transactionString}`
       )
 
       return TE.right('Transaction saved successfully')
