@@ -32,7 +32,7 @@ export const saveTransaction = (transaction: any) =>
             txn.priority,
             txn.event || '',
             txn.category,
-            txn.recurs,
+            txn.recurs || '',
           ],
         ],
         { quoted: true }
@@ -40,7 +40,7 @@ export const saveTransaction = (transaction: any) =>
 
       fs.writeFileSync(
         CONFIG.TRANSACTION_INPUT_CSV_FILENAME,
-        `${transactionsFile}\n${transactionString}`
+        `${transactionsFile}${transactionString}`
       )
 
       return TE.right('Transaction saved successfully')
