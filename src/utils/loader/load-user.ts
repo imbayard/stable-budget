@@ -3,6 +3,7 @@ import fs from 'fs'
 import { CONFIG } from '../../config'
 import * as t from 'io-ts'
 import * as E from 'fp-ts/Either'
+import { Purpose } from '../../types/types'
 
 export const loadUser = () =>
   pipe(
@@ -18,4 +19,15 @@ export const loadUser = () =>
 const UserCodec = t.type({
   priorities: t.array(t.string),
   priority_rankings: t.record(t.string, t.number),
+  purpose: t.record(
+    t.union([
+      t.literal('Health'),
+      t.literal('Success'),
+      t.literal('Happiness'),
+    ]),
+    t.type({
+      adders: t.array(t.string),
+      detractors: t.array(t.string),
+    })
+  ),
 })

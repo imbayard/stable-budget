@@ -8,6 +8,7 @@ import moment from 'moment'
 import cors from 'cors'
 import { saveTransaction } from './utils/writer/save-transaction'
 import { loadUser } from './utils/loader/load-user'
+import { savePurpose } from './utils/writer/save-purpose'
 
 export const main = (dateRange?: DateRange) =>
   pipe(
@@ -64,6 +65,17 @@ app.get('/user', async (req, res) => {
     console.log('User fetch completed successfully')
   } catch (error) {
     console.log('Error:', error)
+    res.status(500).json({ error })
+  }
+})
+
+app.post('/declare-purpose', async (req, res) => {
+  console.log('Setting purpose')
+  try {
+    savePurpose(req.body)
+    res.status(200).json(true)
+    console.log('Set purpose was successful')
+  } catch (error) {
     res.status(500).json({ error })
   }
 })

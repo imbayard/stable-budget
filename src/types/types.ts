@@ -56,3 +56,15 @@ export const TransactionsInputCodec = t.type({
   event: DefaultToUndefinedIfEmptyString,
   recurs: t.union([RecurrenceType, t.undefined]),
 })
+
+export const Purpose = t.type({
+  purpose: t.union([
+    t.literal('Happiness'),
+    t.literal('Success'),
+    t.literal('Health'),
+  ]),
+  adders: t.array(t.string),
+  detractors: t.array(t.string),
+})
+
+export type Purpose = t.TypeOf<typeof Purpose>
