@@ -1,3 +1,10 @@
+import { configDotenv } from 'dotenv'
+import OpenAI from 'openai'
+
+configDotenv({
+  path: './.env',
+})
+
 export const CONFIG = {
   TRANSACTION_INPUT_CSV_FILENAME: 'data/transactions-input.csv',
   USER_CSV_FILENAME: 'data/bayard.json',
@@ -18,4 +25,5 @@ export const CONFIG = {
     'Self Indulgence',
     'Credit Card Points',
   ],
+  CHAT_CLIENT: new OpenAI({ apiKey: process.env['OPENAI_API_KEY'] }),
 }

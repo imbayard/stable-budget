@@ -60,8 +60,11 @@ app.post('/create/transaction', async (req, res) => {
 app.get('/user', async (req, res) => {
   console.log('User fetch beginning')
   try {
-    const result = loadUser()
-    res.status(200).json(result)
+    const result = await loadUser()()
+    const parsed = E.getOrElseW((e) => {
+      throw e
+    })(result)
+    res.status(200).json(parsed)
     console.log('User fetch completed successfully')
   } catch (error) {
     console.log('Error:', error)
