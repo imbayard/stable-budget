@@ -20,6 +20,7 @@ Follow the instructions below to respond to Bayard.
 3. Write a description for each category (happiness, health, and success) hitting on his key points.
 4. Write a summary of his overall purpose noting how aligned he is with his higher self and what he needs to keep moving forward.
 5. Remember, you are talking directly to Bayard so don't refer to him in the third person, but do use his name.
+6. Most importantly, be brief, powerful, respectful, and brutally honest and diligent especially when examining the detractors.
 </instructions>`
 
 const USER_PROMPT = ({ purpose }: User) => `\

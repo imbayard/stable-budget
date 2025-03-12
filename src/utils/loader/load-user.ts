@@ -69,6 +69,7 @@ const UserCodec = t.type({
     ),
     summary: t.string,
   }),
+  goals: t.array(t.string),
 })
 
 export type User = t.TypeOf<typeof UserCodec>
